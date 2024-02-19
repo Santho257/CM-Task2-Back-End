@@ -19,7 +19,7 @@ const con = mysql.createConnection({
   const { response } = await client.bulk({ body: categoryBody, refresh: true });
 }; */
 app.use(express.json());
-app.use(cors({ origin: `http://localhost:5173` }));
+app.use(cors());
 app.listen(port, () => {
   console.log(`Running on ${port}...`);
 });
