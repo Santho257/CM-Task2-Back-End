@@ -6,7 +6,7 @@ const app = express();
 const port = 3001;
 
 const { Client } = require("@elastic/elasticsearch");
-const client = new Client({ node: "https://localhost:9200" });
+const client = new Client({ node: "http://localhost:9200" });
 //let categoryBody = [];
 
 const con = mysql.createConnection({
