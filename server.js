@@ -8,19 +8,16 @@ const port = 2507;
 const { Client } = require("@elastic/elasticsearch");
 const client = new Client({ node: "http://localhost:9200" });
 //let categoryBody = [];
-console.log(` host: ${process.env.DATABASE_HOST},
-user: ${process.env.DATABASE_USER},
-password: ${process.env.DATABASE_PASSWORD},
-database: ${process.env.DATABASE_NAME}`);
+
 const con = mysql.createConnection({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME
 });
-/* const putDocs = async () => {
+const putDocs = async () => {
   const { response } = await client.bulk({ body: categoryBody, refresh: true });
-}; */
+};
 app.use(express.json());
 app.use(cors());
 app.listen(port, () => {
@@ -30,7 +27,10 @@ app.listen(port, () => {
 app.get("/Category", (req, res) => {
   console.count("Category Triggered Times: ");
   con.connect((err) => {
+    
     if (err) res.status(504).send(`${err}`);
+
+    console.log("Connected Successfullu")
     let query = `SELECT * FROM Category`;
     con.query(query, (err, result) => {
       if (err) {
@@ -51,12 +51,12 @@ app.get("/Product", (req, res) => {
       if (err) {
         res.status(404).send(`${err}`);
       } else {
-        /* categoryBody = result;
+        categoryBody = result;
         categoryBody = categoryBody.flatMap((doc) => [
           { index: { _index: "product", _id: doc.id } },
           doc,
         ]);
-        putDocs().catch(console.log); */
+        putDocs().catch(console.log);
         res.send(result);
       }
     });
