@@ -8,7 +8,10 @@ const port = 2507;
 const { Client } = require("@elastic/elasticsearch");
 const client = new Client({ node: "http://localhost:9200" });
 //let categoryBody = [];
-
+console.log(` host: ${process.env.DATABASE_HOST},
+user: ${process.env.DATABASE_USER},
+password: ${process.env.DATABASE_PASSWORD},
+database: ${process.env.DATABASE_NAME}`);
 const con = mysql.createConnection({
   host: process.env.DATABASE_HOST,
   user: process.env.DATABASE_USER,
