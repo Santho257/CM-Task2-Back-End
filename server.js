@@ -6,14 +6,35 @@ const app = express();
 const port = 3001;
 
 const { Client } = require("@elastic/elasticsearch");
-const client = new Client({ node: `http://${process.env.ELASTIC_HOST || "localhost"}:9200`});
-//let categoryBody = [];
+const client = new Client({ node: `http://${process.env.ELASTIC_HOST || "localhost"}:9200` });
+let categoryBody = [];
 
 const con = mysql.createConnection({
-  host: process.env.DATABASE_HOST,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME
+  host: process.env.DATABASE_HOST || "localhost",
+  user: process.env.DATABASE_USER || "santho",
+  password: process.env.DATABASE_PASSWORD || "Santho@257",
+  database: process.env.DATABASE_NAME || "Task2"
+});
+
+con.connect((err) => {
+  if (err) {
+    console.log(`Error While Connecting: ${err}`);
+    return;
+  }
+  let query = `SELECT *,(SELECT name FROM Category WHERE id=catId) Category FROM Product`;
+  con.query(query, async (err, result) => {
+    if (err) {
+      res.status(404).send(`${err}`);
+    } else {
+      categoryBody = result;
+      categoryBody = categoryBody.flatMap((doc) => [
+        { index: { _index: "product", _id: doc.id } },
+        doc,
+      ]);
+      putDocs().catch(console.log);
+    }
+  });
+  console.log("Connected Successfully");
 });
 const putDocs = async () => {
   const { response } = await client.bulk({ body: categoryBody, refresh: true });
@@ -26,19 +47,13 @@ app.listen(port, () => {
 
 app.get("/Category", (req, res) => {
   console.count("Category Triggered Times: ");
-  con.connect((err) => {
-    
-    if (err) res.status(504).send(`${err}`);
-
-    console.log("Connected Successfullu")
-    let query = `SELECT * FROM Category`;
-    con.query(query, (err, result) => {
-      if (err) {
-        res.status(404).send(`${err}`);
-      } else {
-        res.send(result);
-      }
-    });
+  let query = `SELECT * FROM Category`;
+  con.query(query, (err, result) => {
+    if (err) {
+      res.status(404).send(`${err}`);
+    } else {
+      res.send(result);
+    }
   });
 });
 
@@ -48,17 +63,10 @@ app.get("/Product", (req, res) => {
     if (err) res.status(504).send(`${err}`);
     let query = `SELECT *,(SELECT name FROM Category WHERE id=catId) Category FROM Product`;
     con.query(query, async (err, result) => {
-      if (err) {
+      if (err)
         res.status(404).send(`${err}`);
-      } else {
-        categoryBody = result;
-        categoryBody = categoryBody.flatMap((doc) => [
-          { index: { _index: "product", _id: doc.id } },
-          doc,
-        ]);
-        putDocs().catch(console.log);
+      else
         res.send(result);
-      }
     });
   });
 });
