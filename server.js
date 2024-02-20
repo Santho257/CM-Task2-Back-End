@@ -66,9 +66,9 @@ app.get("/Product", (req, res) => {
 app.get("/Product/search=:term", async (req, res) => {
   console.count("Search Triggered Times: ");
   const searchTerm = req.params.term;
-  console.log(searchTerm);
+  //console.log(searchTerm);
   let result = await searchProducts(searchTerm, client);
-  console.log(result);
+  //console.log(result);
   res.send(result);
 });
 /* app.get('/:tableName/page=:id',(req,res)=>{

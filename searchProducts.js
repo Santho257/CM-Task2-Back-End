@@ -67,7 +67,7 @@ const filterQuery = searchTerm => {
 }
 
 const searchProducts = async (searchTerm, client) => {
-    console.log("Hey Im called:))")
+    //console.log("Hey Im called:))")
     try {
         searchTerm = searchTerm.trim()
         searchTerm = searchTerm.replace(/[^0-9a-z\s-]/gi, '');
