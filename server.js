@@ -10,10 +10,10 @@ const client = new Client({ node: "http://localhost:9200" });
 //let categoryBody = [];
 
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "santho",
-  password: "Santho@257",
-  database: "Task2",
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME
 });
 /* const putDocs = async () => {
   const { response } = await client.bulk({ body: categoryBody, refresh: true });
