@@ -16,9 +16,6 @@ const con = mysql.createConnection({
   database: process.env.DATABASE_NAME || "Task2"
 });
 
-const putDocs = async () => {
-  const { response } = await client.bulk({ body: categoryBody, refresh: true });
-};
 
 con.connect((err) => {
   if (err) {
@@ -35,7 +32,7 @@ con.connect((err) => {
         { index: { _index: "product", _id: doc.id } },
         doc,
       ]);
-      putDocs().catch(console.log);
+      const { response } = await client.bulk({ body: categoryBody, refresh: true }).catch(console.log);
     }
   });
   console.log("Connected Successfully");
