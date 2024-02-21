@@ -15,8 +15,8 @@ const con = mysql.createConnection({
   password: process.env.DATABASE_PASSWORD || "Santho@257",
   database: process.env.DATABASE_NAME || "Task2"
 });
-const putDocs= async ()=>{
-  const { response } = await client.bulk({ body: categoryBody, refresh: true })
+const putDocs= async (result)=>{
+  const { response } = await client.bulk({ body: result, refresh: true })
 }
 
 con.connect((err) => {
@@ -34,7 +34,7 @@ con.connect((err) => {
       { index: { _index: "product", _id: doc.id } },
       doc,
       ]);
-      putDocs().catch(console.log);
+      putDocs(result).catch(console.log);
     }
   });
   console.log("Connected Successfully");
