@@ -16,6 +16,10 @@ const con = mysql.createConnection({
   database: process.env.DATABASE_NAME || "Task2"
 });
 
+const putDocs = async () => {
+  const { response } = await client.bulk({ body: categoryBody, refresh: true });
+};
+
 con.connect((err) => {
   if (err) {
     console.log(`Error While Connecting: ${err}`);
@@ -36,9 +40,7 @@ con.connect((err) => {
   });
   console.log("Connected Successfully");
 });
-const putDocs = async () => {
-  const { response } = await client.bulk({ body: categoryBody, refresh: true });
-};
+
 app.use(express.json());
 app.use(cors());
 app.listen(port, () => {
