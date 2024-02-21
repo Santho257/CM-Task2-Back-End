@@ -15,7 +15,9 @@ const con = mysql.createConnection({
   password: process.env.DATABASE_PASSWORD || "Santho@257",
   database: process.env.DATABASE_NAME || "Task2"
 });
-
+const putDocs= async ()=>{
+  const { response } = await client.bulk({ body: categoryBody, refresh: true })
+}
 
 con.connect((err) => {
   if (err) {
@@ -23,7 +25,7 @@ con.connect((err) => {
     return;
   }
   let query = `SELECT *,(SELECT name FROM Category WHERE id=catId) AS Category FROM Product`;
-  con.query(query, async (err, result) => {
+  con.query(query, (err, result) => {
     if (err) {
       res.status(404).send(`${err}`);
     }else{
@@ -31,7 +33,7 @@ con.connect((err) => {
       { index: { _index: "product", _id: doc.id } },
       doc,
       ]);
-      const { response } = await client.bulk({ body: categoryBody, refresh: true }).catch(console.log);
+      putDocs().catch(console.log);
     }
   });
   console.log("Connected Successfully");
