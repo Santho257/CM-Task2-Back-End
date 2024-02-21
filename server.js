@@ -27,7 +27,8 @@ con.connect((err) => {
   let query = `SELECT *,(SELECT name FROM Category WHERE id=catId) AS Category FROM Product`;
   con.query(query, (err, result) => {
     if (err) {
-      res.status(404).send(`${err}`);
+      console.log(err);
+      return;
     }else{
       result = result.flatMap((doc) => [
       { index: { _index: "product", _id: doc.id } },
@@ -59,8 +60,6 @@ app.get("/Category", (req, res) => {
 
 app.get("/Product", (req, res) => {
   console.count("Product Triggered Times: ");
-  con.connect((err) => {
-    if (err) res.status(504).send(`${err}`);
     let query = `SELECT *,(SELECT name FROM Category WHERE id=catId) Category FROM Product`;
     con.query(query, async (err, result) => {
       if (err)
@@ -71,7 +70,6 @@ app.get("/Product", (req, res) => {
         
     });
   });
-});
 
 app.get("/Product/search=:term", async (req, res) => {
   console.count("Search Triggered Times: ");
