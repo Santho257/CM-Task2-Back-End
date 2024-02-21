@@ -21,7 +21,7 @@ con.connect((err) => {
     console.log(`Error While Connecting: ${err}`);
     return;
   }
-  let query = `SELECT *,(SELECT name FROM Category WHERE id=catId) Category FROM Product`;
+  let query = `SELECT *,(SELECT name FROM Category WHERE id=catId) AS Category FROM Product`;
   con.query(query, async (err, result) => {
     if (err) {
       res.status(404).send(`${err}`);
