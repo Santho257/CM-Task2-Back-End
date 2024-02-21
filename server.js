@@ -6,6 +6,7 @@ const app = express();
 const port = 3001;
 
 const { Client } = require("@elastic/elasticsearch");
+console.log({ node: `https://${process.env.ELASTIC_HOST || "localhost"}:9200` });
 const client = new Client({ node: `https://${process.env.ELASTIC_HOST || "localhost"}:9200` });
 let categoryBody = [];
 
