@@ -26,13 +26,6 @@ con.connect((err) => {
   con.query(query, async (err, result) => {
     if (err) {
       res.status(404).send(`${err}`);
-    } else {
-      categoryBody = result;
-      categoryBody = categoryBody.flatMap((doc) => [
-        { index: { _index: "product", _id: doc.id } },
-        doc,
-      ]);
-      const { response } = await client.bulk({ body: categoryBody, refresh: true }).catch(console.log);
     }
   });
   console.log("Connected Successfully");
@@ -64,8 +57,16 @@ app.get("/Product", (req, res) => {
     con.query(query, async (err, result) => {
       if (err)
         res.status(404).send(`${err}`);
-      else
+      else{
+        categoryBody = result;
+        categoryBody = categoryBody.flatMap((doc) => [
+        { index: { _index: "product", _id: doc.id } },
+        doc,
+      ]);
+        const { response } = await client.bulk({ body: categoryBody, refresh: true }).catch(console.log);
         res.send(result);
+      }
+        
     });
   });
 });
