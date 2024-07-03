@@ -3,7 +3,7 @@ const mysql = require("mysql2");
 const cors = require("cors");
 const express = require("express");
 const app = express();
-const port = 3001;
+const port = 3000;
 
 const { Client } = require("@elastic/elasticsearch");
 const client = new Client({ node: `http://localhost:9200` });

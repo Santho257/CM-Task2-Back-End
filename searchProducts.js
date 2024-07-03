@@ -73,8 +73,11 @@ const searchProducts = async (searchTerm, client) => {
         searchTerm = searchTerm.replace(/[^0-9a-z\s-]/gi, '');
         const filterQry = filterQuery(searchTerm);
         //console.log(filterQry);
-        const match = searchTerm.match(/\b(above|greater than|over|under|less than|below)\s*(\d+(\.\d+)?)\b/i) || searchTerm.match(/\b(between|from)\s*(\d+(\.\d+)?)\s*(and|to)\s*(\d+(\.\d+)?)\b/i);
-        if(match)   searchTerm = searchTerm.slice(0,match.index)+searchTerm.slice(match.index+match[0].length);
+        const match = searchTerm.match(/\b(above|greater than|over|under|less than|below)\s*(\d+(\.\d+)?)\b/i) || searchTerm.match(/\b(between|from)\s*(\d+(\.\d+)?)\s*(and|to)\s*(\d+(\.\d+)?)\b/i)||searchTerm.match(/\b(products|product)\b/i);
+        if(match){
+            console.log(match[0]);
+            searchTerm = searchTerm.slice(0,match.index)+searchTerm.slice(match.index+match[0].length);
+        }   
         const tempTerms = searchTerm.split(' ');
         terms = tempTerms.filter((term) => term != '');
         const shouldClauses = terms.map(term => {
@@ -95,14 +98,7 @@ const searchProducts = async (searchTerm, client) => {
                             bool: {
                                 should: shouldClauses
                             }
-                        }],//shouldClauses,
-                        should: /* [{
-                            match: {
-                                brand: {
-                                    query: searchTerm
-                                }
-                            }
-                        }] */null,
+                        }],
                         filter: filterQry
                     }
                 }
