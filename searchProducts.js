@@ -70,7 +70,7 @@ const searchProducts = async (searchTerm, client) => {
     //console.log("Hey Im called:))")
     try {
         searchTerm = searchTerm.trim()
-        searchTerm = searchTerm.replace(/[^0-9a-z\s-]/gi, '');
+        searchTerm = searchTerm.replace(/[^0-9a-z\s-.]/gi, '');
         const filterQry = filterQuery(searchTerm);
         //console.log(filterQry);
         const match = searchTerm.match(/\b(above|greater than|over|under|less than|below)\s*(\d+(\.\d+)?)\b/i) || searchTerm.match(/\b(between|from)\s*(\d+(\.\d+)?)\s*(and|to)\s*(\d+(\.\d+)?)\b/i)||searchTerm.match(/\b(products|product)\b/i);
